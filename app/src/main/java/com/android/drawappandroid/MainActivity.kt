@@ -24,6 +24,7 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     private var imageView: ImageView? = null
+    private var imvEraser: ImageView? = null
     private var submitButton: Button? = null
     private var floatStartX = -1f
     private var floatStartY: Float = -1f
@@ -50,8 +51,12 @@ class MainActivity : AppCompatActivity() {
         )
         imageView = findViewById(R.id.imvSketch)
         submitButton = findViewById(R.id.btnSave)
+        imvEraser = findViewById(R.id.imvEraser)
         submitButton?.setOnClickListener { buttonSaveImage(submitButton) }
-
+        imvEraser?.setOnClickListener {
+            paint.color = Color.WHITE
+            drawLine()
+        }
     }
 
     private fun drawPaintSketchImage() {
@@ -69,6 +74,11 @@ class MainActivity : AppCompatActivity() {
             paint.style = Paint.Style.STROKE
             paint.strokeWidth = 8f
         }
+        drawLine()
+        imageView?.setImageBitmap(bitmap)
+    }
+
+    private fun drawLine(){
         canvas?.drawLine(
             floatStartX,
             floatStartY - 220,
@@ -76,7 +86,6 @@ class MainActivity : AppCompatActivity() {
             floatEndY - 220,
             paint
         )
-        imageView?.setImageBitmap(bitmap)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
