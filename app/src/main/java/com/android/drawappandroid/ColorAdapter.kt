@@ -21,7 +21,8 @@ class ColorAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentColorsData = colorList?.get(position)
-
+        val holderListView = holder as ColorListVH
+//        currentColorsData?.colorCode?.let { holderListView.imbColor?.setBackgroundColor(it.toInt()) }
     }
 
     override fun getItemCount() = colorList?.count() ?: 0
