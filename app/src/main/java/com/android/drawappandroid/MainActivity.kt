@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
@@ -16,6 +17,10 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
@@ -26,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private var imageView: ImageView? = null
     private var imvEraser: ImageView? = null
     private var submitButton: Button? = null
+    private var rcvColor: RecyclerView? = null
     private var floatStartX = -1f
     private var floatStartY: Float = -1f
     private var floatEndX = -1f
@@ -33,6 +39,8 @@ class MainActivity : AppCompatActivity() {
     private var bitmap: Bitmap? = null
     private var canvas: Canvas? = null
     private val paint: Paint = Paint()
+    lateinit var colorAdapter: ColorAdapter
+    var colorList = mutableListOf<ColorData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,13 +58,35 @@ class MainActivity : AppCompatActivity() {
             PackageManager.PERMISSION_GRANTED
         )
         imageView = findViewById(R.id.imvSketch)
-//        submitButton = findViewById(R.id.btnSave)
+        rcvColor = findViewById(R.id.rcvColor)
         imvEraser = findViewById(R.id.imvEraser)
         submitButton?.setOnClickListener { buttonSaveImage(submitButton) }
         imvEraser?.setOnClickListener {
             paint.color = Color.WHITE
             drawLine()
         }
+        initRecyclerView()
+        addColorList()
+    }
+
+    private fun addColorList() {
+        colorList.addAll(
+            mutableListOf(
+                ColorData(1, "#D40FF9"), ColorData(2, "#47986B"),
+                ColorData(2, "#6768AB"), ColorData(2, "#A1C7CB"),
+                ColorData(2, "#5F4342"), ColorData(2, "#EE9D32")
+            )
+        )
+    }
+
+    private fun initRecyclerView() {
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rcvColor?.layoutManager = layoutManager
+        colorAdapter = ColorAdapter(colorList) {
+
+        }
+        rcvColor?.layoutManager = layoutManager
+        rcvColor?.adapter = colorAdapter
     }
 
     private fun drawPaintSketchImage() {
@@ -78,7 +108,7 @@ class MainActivity : AppCompatActivity() {
         imageView?.setImageBitmap(bitmap)
     }
 
-    private fun drawLine(){
+    private fun drawLine() {
         canvas?.drawLine(
             floatStartX,
             floatStartY - 220,

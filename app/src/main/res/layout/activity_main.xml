@@ -77,8 +77,11 @@
                 android:progressBackgroundTint="#009688"
                 android:progressTint="#009688"
                 android:thumbTint="#009688" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
-
 </RelativeLayout>
