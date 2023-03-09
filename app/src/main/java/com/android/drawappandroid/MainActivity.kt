@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
             PackageManager.PERMISSION_GRANTED
         )
         imageView = findViewById(R.id.imvSketch)
-        submitButton = findViewById(R.id.btnSave)
+//        submitButton = findViewById(R.id.btnSave)
         imvEraser = findViewById(R.id.imvEraser)
         submitButton?.setOnClickListener { buttonSaveImage(submitButton) }
         imvEraser?.setOnClickListener {
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
             paint.color = Color.RED
             paint.isAntiAlias = true
             paint.style = Paint.Style.STROKE
-            paint.strokeWidth = 8f
+            paint.strokeWidth = 18f
         }
         drawLine()
         imageView?.setImageBitmap(bitmap)
