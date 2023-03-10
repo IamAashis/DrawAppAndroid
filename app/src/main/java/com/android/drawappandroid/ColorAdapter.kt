@@ -1,5 +1,7 @@
 package com.android.drawappandroid
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +24,7 @@ class ColorAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentColorsData = colorList?.get(position)
         val holderListView = holder as ColorListVH
-//        currentColorsData?.colorCode?.let { holderListView.imbColor?.setBackgroundColor(it.toInt()) }
+        holderListView.imbColor?.backgroundTintList = ColorStateList.valueOf(Color.parseColor(currentColorsData?.colorCode))
     }
 
     override fun getItemCount() = colorList?.count() ?: 0

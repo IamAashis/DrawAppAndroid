@@ -13,7 +13,9 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.SeekBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -32,6 +34,11 @@ class MainActivity : AppCompatActivity() {
     private var imvEraser: ImageView? = null
     private var submitButton: Button? = null
     private var rcvColor: RecyclerView? = null
+    private var sbrSeekBar: SeekBar? = null
+    private var imbColorPicker: ImageButton? = null
+    private var vewPen: View? = null
+    private var vewColorSelected: View? = null
+    private var vewEarser: View? = null
     private var floatStartX = -1f
     private var floatStartY: Float = -1f
     private var floatEndX = -1f
@@ -41,6 +48,7 @@ class MainActivity : AppCompatActivity() {
     private val paint: Paint = Paint()
     lateinit var colorAdapter: ColorAdapter
     var colorList = mutableListOf<ColorData>()
+    var selectedItem = "imbPen"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,13 +68,47 @@ class MainActivity : AppCompatActivity() {
         imageView = findViewById(R.id.imvSketch)
         rcvColor = findViewById(R.id.rcvColor)
         imvEraser = findViewById(R.id.imvEraser)
+        sbrSeekBar = findViewById(R.id.sbrSeekBar)
+        imbColorPicker = findViewById(R.id.imbColorPicker)
+        vewPen = findViewById(R.id.vewPen)
+        vewColorSelected = findViewById(R.id.vewColorSelected)
+        vewEarser = findViewById(R.id.vewEarser)
         submitButton?.setOnClickListener { buttonSaveImage(submitButton) }
         imvEraser?.setOnClickListener {
+            selectedItem = "eraser"
             paint.color = Color.WHITE
             drawLine()
         }
         initRecyclerView()
         addColorList()
+        itemSelected()
+    }
+
+    private fun itemSelected() {
+        when (selectedItem) {
+            "imbPen" -> {
+                rcvColor?.visibility = View.GONE
+                sbrSeekBar?.visibility = View.VISIBLE
+                vewPen?.visibility = View.VISIBLE
+                vewColorSelected?.visibility = View.INVISIBLE
+                vewEarser?.visibility = View.INVISIBLE
+            }
+            "eraser" -> {
+                rcvColor?.visibility = View.GONE
+                sbrSeekBar?.visibility = View.VISIBLE
+                vewPen?.visibility = View.INVISIBLE
+                vewColorSelected?.visibility = View.INVISIBLE
+                vewEarser?.visibility = View.VISIBLE
+            }
+            "colorPicker" -> {
+                rcvColor?.visibility = View.VISIBLE
+                sbrSeekBar?.visibility = View.GONE
+                vewPen?.visibility = View.INVISIBLE
+                vewColorSelected?.visibility = View.VISIBLE
+                vewEarser?.visibility = View.INVISIBLE
+            }
+        }
+
     }
 
     private fun addColorList() {
