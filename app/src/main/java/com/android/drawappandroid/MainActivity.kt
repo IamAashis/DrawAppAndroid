@@ -9,7 +9,6 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
@@ -20,9 +19,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SimpleItemAnimator
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
@@ -32,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     private var imageView: ImageView? = null
     private var imvEraser: ImageView? = null
+    private var imbPen: ImageView? = null
     private var submitButton: Button? = null
     private var rcvColor: RecyclerView? = null
     private var sbrSeekBar: SeekBar? = null
@@ -70,18 +68,34 @@ class MainActivity : AppCompatActivity() {
         imvEraser = findViewById(R.id.imvEraser)
         sbrSeekBar = findViewById(R.id.sbrSeekBar)
         imbColorPicker = findViewById(R.id.imbColorPicker)
+        imbPen = findViewById(R.id.imbPen)
         vewPen = findViewById(R.id.vewPen)
         vewColorSelected = findViewById(R.id.vewColorSelected)
         vewEarser = findViewById(R.id.vewEarser)
+
+        initRecyclerView()
+        addColorList()
+        itemSelected()
+        initListener()
+    }
+
+    private fun initListener() {
+        imbColorPicker?.setOnClickListener {
+            selectedItem = "colorPicker"
+            itemSelected()
+        }
+        imbPen?.setOnClickListener {
+            selectedItem = "imbPen"
+            paint.color = Color.WHITE
+            itemSelected()
+        }
         submitButton?.setOnClickListener { buttonSaveImage(submitButton) }
         imvEraser?.setOnClickListener {
             selectedItem = "eraser"
             paint.color = Color.WHITE
             drawLine()
+            itemSelected()
         }
-        initRecyclerView()
-        addColorList()
-        itemSelected()
     }
 
     private fun itemSelected() {
@@ -144,7 +158,7 @@ class MainActivity : AppCompatActivity() {
             paint.color = Color.RED
             paint.isAntiAlias = true
             paint.style = Paint.Style.STROKE
-            paint.strokeWidth = 18f
+            paint.strokeWidth = 188f
         }
         drawLine()
         imageView?.setImageBitmap(bitmap)

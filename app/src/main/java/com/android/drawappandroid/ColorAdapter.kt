@@ -15,6 +15,7 @@ class ColorAdapter(
     private var colorList: List<ColorData>?, private val onUserClicked: (position: Int) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var selected = ""
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View =
             LayoutInflater.from(parent.context).inflate(R.layout.adapter_color_list, parent, false)
@@ -24,7 +25,8 @@ class ColorAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentColorsData = colorList?.get(position)
         val holderListView = holder as ColorListVH
-        holderListView.imbColor?.backgroundTintList = ColorStateList.valueOf(Color.parseColor(currentColorsData?.colorCode))
+        holderListView.imbColor?.backgroundTintList =
+            ColorStateList.valueOf(Color.parseColor(currentColorsData?.colorCode))
     }
 
     override fun getItemCount() = colorList?.count() ?: 0
